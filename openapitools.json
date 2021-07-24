@@ -1,0 +1,19 @@
+{
+  "$schema": "node_modules/@openapitools/openapi-generator-cli/config.schema.json",
+  "generator-cli": {
+    "version": "5.1.0",
+    "generators": {
+      "typescript-fetch": {
+        "generatorName": "typescript-axios",
+        "glob": "selph-openapi.yml",
+        "output": "src/apis/selph",
+        "skip-validate-spec": true,
+        "additionalProperties": {
+          "typescriptThreePlus": true,
+          "withInterfaces": true,
+          "generateAliasAsModel": true
+        }
+      }
+    }
+  }
+}

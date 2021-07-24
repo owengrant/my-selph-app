@@ -1,0 +1,137 @@
+---
+openapi: 3.0.3
+info:
+  title: Generated API
+  version: "1.0"
+tags:
+- name: FileController
+- name: SelphieController
+paths:
+  /api/v1/selphies:
+    get:
+      tags:
+      - SelphieController
+      operationId: findAllSelphies
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SelphieGet'
+    post:
+      tags:
+      - SelphieController
+      operationId: createSelphie
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SelphiePost'
+            encoding:
+              response:
+                contentType: application/octet-stream
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SelphieGet'
+  /api/v1/selphies/{id}:
+    delete:
+      tags:
+      - SelphieController
+      operationId: deleteSelphie
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: OK
+  /files/{filename}:
+    get:
+      tags:
+      - FileController
+      operationId: getResponse
+      parameters:
+      - name: filename
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+components:
+  schemas:
+    File:
+      type: object
+      properties:
+        path:
+          type: string
+        absoluteFile:
+          $ref: '#/components/schemas/File'
+        absolutePath:
+          type: string
+        canonicalFile:
+          $ref: '#/components/schemas/File'
+        canonicalPath:
+          type: string
+        freeSpace:
+          format: int64
+          type: integer
+        name:
+          type: string
+        parent:
+          type: string
+        parentFile:
+          $ref: '#/components/schemas/File'
+        totalSpace:
+          format: int64
+          type: integer
+        usableSpace:
+          format: int64
+          type: integer
+        absolute:
+          type: boolean
+        directory:
+          type: boolean
+        file:
+          type: boolean
+        hidden:
+          type: boolean
+        invalid:
+          type: boolean
+    SelphieGet:
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        question:
+          type: string
+        response:
+          type: string
+    SelphiePost:
+      required:
+      - response
+      type: object
+      properties:
+        question:
+          pattern: \S
+          type: string
+          nullable: false
+        response:
+          allOf:
+          - $ref: '#/components/schemas/File'
+          - format: binary
+            type: string
+            nullable: false
