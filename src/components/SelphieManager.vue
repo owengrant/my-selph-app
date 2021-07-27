@@ -1,22 +1,53 @@
 <template>
     <v-container fluid>
-        <v-row justify="center">
-            <v-col cols="5" offset="1" v-for="selphie in selphies" :key="selphie.id">
-                <v-card>
-                    <v-card-title>
-                        {{selphie.question}}
-                    </v-card-title>
-                    <v-card-text>
-                        <audio controls>
-                            <source :src="audioSource(selphie)" type="audio/mpeg">
-                        </audio>
-                    </v-card-text>
-                    <v-card-actions>
-                        <v-btn color="error" @click="removeSelphie(selphie)">
-                            Delete
-                        </v-btn>
-                    </v-card-actions>
-                </v-card>
+        <v-row>
+            <v-col cols="9">
+                <v-row>
+                    <v-col cols="4" v-for="selphie in selphies" :key="selphie.id">
+                        <v-card>
+                            <v-card-title>
+                                {{selphie.question}}
+                            </v-card-title>
+                            <v-card-text>
+                                <audio controls>
+                                    <source :src="audioSource(selphie)" type="audio/mpeg">
+                                </audio>
+                            </v-card-text>
+                            <v-card-actions>
+                                <v-btn color="error" @click="removeSelphie(selphie)">
+                                    Delete
+                                </v-btn>
+                            </v-card-actions>
+                        </v-card>
+                    </v-col>
+                </v-row>
+            </v-col>
+            <v-col cols="3">
+                <v-row>
+                    <v-col cols="12">
+                        <v-card>
+                            <v-card-title>
+                                Teach YourSelph
+                            </v-card-title>
+                            <v-divider />
+                            <v-card-text>
+                                <v-form>
+                                    <v-textarea 
+                                     v-model="askedQuestion"
+                                     label="Enter your question"
+                                     counter="60"
+                                    />
+                                    <v-btn @click="ask" color="success" block>
+                                        Ask Selph
+                                    </v-btn>
+                                </v-form>
+                            </v-card-text>
+                            <v-divider />
+                            <v-card-actions>
+                            </v-card-actions>
+                        </v-card>
+                    </v-col>
+                </v-row>
             </v-col>
         </v-row>
     <v-dialog
@@ -79,6 +110,8 @@ export default class SelphieManager extends Vue {
 
     showCreate = false
 
+    askedQuestion = ""
+
     async mounted() {
         this.refresh()
     }
@@ -109,6 +142,11 @@ export default class SelphieManager extends Vue {
 
     audioSource(selph: SelphieGet) {
         return "http://localhost:8000/files/"+selph.response
+    }
+
+    async ask() {
+        const response = await this.selphieApi.askSelph(this.askedQuestion);
+        console.log(response.data)
     }
     
 

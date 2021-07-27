@@ -173,6 +173,40 @@ export const SelphieControllerApiAxiosParamCreator = function (configuration?: C
     return {
         /**
          * 
+         * @param {string} [q] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        askSelph: async (q?: string, options: any = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v1/selphies/{ask}`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (q !== undefined) {
+                localVarQueryParameter['q'] = q;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {any} response 
          * @param {string} [question] 
          * @param {*} [options] Override http request option.
@@ -290,6 +324,16 @@ export const SelphieControllerApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @param {string} [q] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async askSelph(q?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.askSelph(q, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @param {any} response 
          * @param {string} [question] 
          * @param {*} [options] Override http request option.
@@ -330,6 +374,15 @@ export const SelphieControllerApiFactory = function (configuration?: Configurati
     return {
         /**
          * 
+         * @param {string} [q] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        askSelph(q?: string, options?: any): AxiosPromise<void> {
+            return localVarFp.askSelph(q, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {any} response 
          * @param {string} [question] 
          * @param {*} [options] Override http request option.
@@ -366,6 +419,15 @@ export const SelphieControllerApiFactory = function (configuration?: Configurati
 export interface SelphieControllerApiInterface {
     /**
      * 
+     * @param {string} [q] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SelphieControllerApiInterface
+     */
+    askSelph(q?: string, options?: any): AxiosPromise<void>;
+
+    /**
+     * 
      * @param {any} response 
      * @param {string} [question] 
      * @param {*} [options] Override http request option.
@@ -400,6 +462,17 @@ export interface SelphieControllerApiInterface {
  * @extends {BaseAPI}
  */
 export class SelphieControllerApi extends BaseAPI implements SelphieControllerApiInterface {
+    /**
+     * 
+     * @param {string} [q] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SelphieControllerApi
+     */
+    public askSelph(q?: string, options?: any) {
+        return SelphieControllerApiFp(this.configuration).askSelph(q, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 
      * @param {any} response 

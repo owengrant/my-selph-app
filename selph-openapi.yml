@@ -41,6 +41,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SelphieGet'
+  /api/v1/selphies/{ask}:
+    get:
+      tags:
+      - SelphieController
+      operationId: askSelph
+      parameters:
+      - name: q
+        in: query
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
   /api/v1/selphies/{id}:
     delete:
       tags:
