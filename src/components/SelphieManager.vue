@@ -32,18 +32,22 @@
                             <v-divider />
                             <v-card-text>
                                 <v-form>
-                                    <v-textarea 
+                                    <v-text-field 
                                      v-model="askedQuestion"
                                      label="Enter your question"
                                      counter="60"
                                     />
-                                    <v-btn @click="ask" color="success" block>
-                                        Ask Selph
-                                    </v-btn>
+                                    <v-divider class="mt-5 mb-5"/>
+                                    <audio v-if="hideResponse()" controls>
+                                        <source :src="audioSource(currentResponse)" type="audio/mpeg">
+                                    </audio>
                                 </v-form>
                             </v-card-text>
                             <v-divider />
                             <v-card-actions>
+                                <v-btn @click="ask" :loading="asking" color="success" block>
+                                    Ask Selph
+                                </v-btn>
                             </v-card-actions>
                         </v-card>
                     </v-col>
@@ -111,6 +115,9 @@ export default class SelphieManager extends Vue {
     showCreate = false
 
     askedQuestion = ""
+    currentResponse: SelphieGet | null = null
+
+    asking = false
 
     async mounted() {
         this.refresh()
@@ -145,8 +152,22 @@ export default class SelphieManager extends Vue {
     }
 
     async ask() {
-        const response = await this.selphieApi.askSelph(this.askedQuestion);
-        console.log(response.data)
+        this.asking = true
+        try{
+            const response = await this.selphieApi.askSelph(this.askedQuestion);
+            this.currentResponse = response.data
+        } catch(e) {
+            console.log(e)
+        } finally {
+            this.asking = false
+        }
+    }
+
+    hideResponse() {
+        const result = this.currentResponse && this.askedQuestion.length > 0
+        if(result == false)
+        this.currentResponse = null
+       return result
     }
     
 
