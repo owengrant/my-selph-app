@@ -1,28 +1,23 @@
 <template>
   <v-parallax :height="height" src="parallax.jpg" dark>
-    <v-row  justify="center" class="pa-0 ma-0">
-      <v-col class="text-center pa-0 ma-0" cols="12">
-        <canvas id="visualiser" :height="height - 100" :width="width"></canvas>
-        <audio v-if="hideResponse()" id="player" crossorigin="anonymous" controls>
-          <source :src="audioSource()" type="audio/mpeg" />
-        </audio>
+    <v-row justify="center" class="pa-0 ma-0">
+      <v-col class="text-center" cols="4">
+        <v-text-field
+          v-model="question"
+          v-on:keyup.enter="ask"
+          label="Ask Selph"
+          :disabled="showAudio"
+          dark
+          clearable
+        />
       </v-col>
     </v-row>
-    <v-row justify="center" class="pa-0 ma-0">
-      <v-col class="text-center pa-0 ma-0" cols="12">
-        <v-container fluid>
-          <v-row justify="center">
-            <v-col cols="8">
-              <v-text-field
-                v-model="question"
-                v-on:keyup.enter="ask"
-                label="Ask Selph"
-                dark
-                clearable
-              />
-            </v-col>
-          </v-row>
-        </v-container>
+    <v-row v-if="showAudio" justify="center" class="mb-15">
+      <v-col class="text-center" cols="12">
+        <canvas id="visualiser" :height="height - 150" :width="width"></canvas>
+        <audio id="player" crossorigin="anonymous" controls>
+          <source :src="audioSource" type="audio/mpeg" />
+        </audio>
       </v-col>
     </v-row>
   </v-parallax>
@@ -34,19 +29,24 @@ import { SelphieControllerApi } from "@/apis/selph";
 
 export default {
   name: "Ask",
-//   mounted() {
-//     this.addVisualisation()
-//   },
+  mounted() {
+    this.addVisualisation()
+  },
   data: () => ({
     question: "",
     answer: "",
+    showAudio: false
   }),
   computed: {
     height() {
       return window.innerHeight - 56;
     },
     width() {
-      return window.innerWidth - 56;
+      return window.innerWidth;
+    },
+    audioSource() {
+      const result = "http://localhost:8000/files/" + this.answer;
+      return result
     },
   },
   methods: {
@@ -61,22 +61,16 @@ export default {
     async ask() {
       const response = await new SelphieControllerApi().askSelph(this.question);
       this.answer = response.data.response;
+      this.showAudio = true
+      setTimeout(() => {
+        const player = document.getElementById("player")
+        player.onended = (event) => {
+          this.showAudio = false
+        };
+        player.play()
+        this.addVisualisation()
+      }, 2000)
     },
-    audioSource() {
-      if (this.answer.length < 1)
-        return "http://localhost:8000/files/-677922917.mp3";
-      return "http://localhost:8000/files/" + this.answer;
-    },
-    hideResponse() {
-      const result = this.answer && this.question.length > 0;
-      if (result == false) {
-        this.answer = null;
-        setTimeout(() => {
-          this.addVisualisation()
-        }, 5000)
-      }
-      return result;
-  }
   },
 };
 </script>
