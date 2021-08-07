@@ -1,11 +1,17 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
-import Home from "../views/Home.vue";
-import SelphieManager from "../components/SelphieManager.vue"
+
+import SelphieManager from "../components/SelphieManager.vue";
+import Ask from "@/components/Ask.vue";
 
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
+  {
+    path: "/",
+    name: "Ask",
+    component: Ask,
+  },
   {
     path: "/manager",
     name: "SelphieManager",

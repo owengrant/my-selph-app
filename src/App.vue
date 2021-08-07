@@ -1,8 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar app color="primary" dark>
-     My Digital Selph
-    </v-app-bar>
+    <v-app-bar app color="primary" dark> My Selph </v-app-bar>
 
     <v-main>
       <router-view />
