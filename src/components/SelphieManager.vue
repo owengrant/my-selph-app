@@ -153,7 +153,9 @@ export default class SelphieManager extends Vue {
     this.asking = true;
     try {
       const response = await this.selphieApi.askSelph(this.askedQuestion);
-      this.currentResponse = response.data;
+      const answers = response.data;
+      if(answers.length > 0)
+        this.currentResponse = answers[0]
     } catch (e) {
       console.log(e);
     } finally {

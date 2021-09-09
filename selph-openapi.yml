@@ -57,7 +57,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SelphieGet'
+                type: array
+                items:
+                  $ref: '#/components/schemas/SelphieGet'
   /api/v1/selphies/{id}:
     delete:
       tags:

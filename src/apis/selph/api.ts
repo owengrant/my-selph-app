@@ -328,7 +328,7 @@ export const SelphieControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async askSelph(q?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SelphieGet>> {
+        async askSelph(q?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SelphieGet>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.askSelph(q, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -378,7 +378,7 @@ export const SelphieControllerApiFactory = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        askSelph(q?: string, options?: any): AxiosPromise<SelphieGet> {
+        askSelph(q?: string, options?: any): AxiosPromise<Array<SelphieGet>> {
             return localVarFp.askSelph(q, options).then((request) => request(axios, basePath));
         },
         /**
@@ -424,7 +424,7 @@ export interface SelphieControllerApiInterface {
      * @throws {RequiredError}
      * @memberof SelphieControllerApiInterface
      */
-    askSelph(q?: string, options?: any): AxiosPromise<SelphieGet>;
+    askSelph(q?: string, options?: any): AxiosPromise<Array<SelphieGet>>;
 
     /**
      * 

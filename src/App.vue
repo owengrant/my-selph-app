@@ -1,7 +1,10 @@
 <template>
   <v-app>
-    <v-app-bar app color="primary" dark> My Selph </v-app-bar>
-
+    <v-app-bar app color="black-lighten-2" dark> 
+      <span class="headline">
+        My Selph 
+      </span>
+    </v-app-bar>
     <v-main>
       <router-view />
     </v-main>
